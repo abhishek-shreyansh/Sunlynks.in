@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunlynks - Solar Energy Solutions</title>
+    <meta name="description" content="Sunlynks - Empowering India with sustainable solar energy solutions">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        header { background: linear-gradient(135deg, #f59e0b, #fbbf24); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: #1f2937; }
+        nav a { color: #1f2937; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        nav a:hover { color: #fff; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920') center/cover; height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 2rem; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.3rem; max-width: 600px; margin-bottom: 2rem; }
+        .btn { background: #f59e0b; color: white; padding: 1rem 2.5rem; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; transition: all 0.3s; }
+        .btn:hover { background: #fbbf24; transform: translateY(-3px); }
+        .about { padding: 4rem 2rem; text-align: center; background: #fff; }
+        .about h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #1f2937; }
+        .about p { max-width: 700px; margin: 0 auto; color: #6b7280; }
+        .services { padding: 4rem 2rem; background: #f3f4f6; }
+        .services h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #1f2937; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .service-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-card h3 { color: #f59e0b; margin-bottom: 1rem; }
+        footer { background: #1f2937; color: white; text-align: center; padding: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Sunlynks</div>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Powering India with Solar Energy</h1>
+        <p>Sustainable, affordable, and reliable solar solutions for homes and businesses across India.</p>
+        <a href="#contact" class="btn">Get a Free Quote</a>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Sunlynks</h2>
+        <p>We are dedicated to making clean solar energy accessible to every household and business in India. Our team of experts provides end-to-end solar solutions including consultation, installation, and maintenance.</p>
+    </section>
+
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="service-grid">
+            <div class="service-card">
+                <h3>Residential Solar</h3>
+                <p>Complete rooftop solar solutions for homes. Reduce your electricity bills with our customized solar panel installations.</p>
+            </div>
+            <div class="service-card">
+                <h3>Commercial Solar</h3>
+                <p>Large-scale solar installations for businesses and industries. Cut operational costs while going green.</p>
+            </div>
+            <div class="service-card">
+                <h3>Solar Subsidy Guidance</h3>
+                <p>We help you navigate government subsidy schemes and financing options for your solar project.</p>
+            </div>
+            <div class="service-card">
+                <h3>Maintenance & Support</h3>
+                <p>24/7 monitoring and maintenance services to ensure your solar system runs at peak efficiency.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>&copy; 2026 Sunlynks. All rights reserved. | Contact: info@sunlynks.in</p>
+    </footer>
+</body>
+</html>
