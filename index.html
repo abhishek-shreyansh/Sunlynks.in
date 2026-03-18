@@ -3,77 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunlynks - Solar Energy Solutions</title>
-    <meta name="description" content="Sunlynks - Empowering India with sustainable solar energy solutions">
+    <title>SolarCRM - Three Stage Solar Management System</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
-        header { background: linear-gradient(135deg, #f59e0b, #fbbf24); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: #1f2937; }
-        nav a { color: #1f2937; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
-        nav a:hover { color: #fff; }
-        .hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920') center/cover; height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 2rem; }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
-        .hero p { font-size: 1.3rem; max-width: 600px; margin-bottom: 2rem; }
-        .btn { background: #f59e0b; color: white; padding: 1rem 2.5rem; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; transition: all 0.3s; }
-        .btn:hover { background: #fbbf24; transform: translateY(-3px); }
-        .about { padding: 4rem 2rem; text-align: center; background: #fff; }
-        .about h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #1f2937; }
-        .about p { max-width: 700px; margin: 0 auto; color: #6b7280; }
-        .services { padding: 4rem 2rem; background: #f3f4f6; }
-        .services h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #1f2937; }
-        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .service-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
-        .service-card:hover { transform: translateY(-5px); }
-        .service-card h3 { color: #f59e0b; margin-bottom: 1rem; }
-        footer { background: #1f2937; color: white; text-align: center; padding: 2rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 1200px;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .login-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .login-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .login-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2.5em;
+        }
+
+        .login-card h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .login-card p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .role-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .admin-tag { background: #ff4757; color: white; }
+        .company-tag { background: #2ed573; color: white; }
+        .employee-tag { background: #ffa502; color: white; }
+
+        .login-form {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .stage-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .stage {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+        }
+
+        .stage:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .stage-number {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+
+        .stage-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stage-desc {
+            color: #666;
+            font-size: 0.85em;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Sunlynks</div>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+    <div class="container">
+        <div class="header">
+            <h1>☀️ SolarCRM</h1>
+            <p>Three-Stage Solar Installation Management System</p>
+        </div>
 
-    <section class="hero">
-        <h1>Powering India with Solar Energy</h1>
-        <p>Sustainable, affordable, and reliable solar solutions for homes and businesses across India.</p>
-        <a href="#contact" class="btn">Get a Free Quote</a>
-    </section>
+        <div class="login-grid">
+            <!-- Admin Panel Card -->
+            <div class="login-card" onclick="showLoginForm('admin')">
+                <div class="login-icon">👑</div>
+                <span class="role-tag admin-tag">Master Admin</span>
+                <h3>Admin Panel</h3>
+                <p>System administrator access<br>Full control & configuration</p>
+            </div>
 
-    <section id="about" class="about">
-        <h2>About Sunlynks</h2>
-        <p>We are dedicated to making clean solar energy accessible to every household and business in India. Our team of experts provides end-to-end solar solutions including consultation, installation, and maintenance.</p>
-    </section>
+            <!-- Company Admin Card -->
+            <div class="login-card" onclick="showLoginForm('company')">
+                <div class="login-icon">🏢</div>
+                <span class="role-tag company-tag">Company Admin</span>
+                <h3>Company Admin</h3>
+                <p>Company head access<br>Manage teams & overview</p>
+            </div>
 
-    <section id="services" class="services">
-        <h2>Our Services</h2>
-        <div class="service-grid">
-            <div class="service-card">
-                <h3>Residential Solar</h3>
-                <p>Complete rooftop solar solutions for homes. Reduce your electricity bills with our customized solar panel installations.</p>
-            </div>
-            <div class="service-card">
-                <h3>Commercial Solar</h3>
-                <p>Large-scale solar installations for businesses and industries. Cut operational costs while going green.</p>
-            </div>
-            <div class="service-card">
-                <h3>Solar Subsidy Guidance</h3>
-                <p>We help you navigate government subsidy schemes and financing options for your solar project.</p>
-            </div>
-            <div class="service-card">
-                <h3>Maintenance & Support</h3>
-                <p>24/7 monitoring and maintenance services to ensure your solar system runs at peak efficiency.</p>
+            <!-- Employee Card -->
+            <div class="login-card" onclick="showLoginForm('employee')">
+                <div class="login-icon">👷</div>
+                <span class="role-tag employee-tag">Employee</span>
+                <h3>Employee Access</h3>
+                <p>Sales • Finance • Execution<br>Team-specific dashboards</p>
             </div>
         </div>
-    </section>
 
-    <footer id="contact">
-        <p>&copy; 2026 Sunlynks. All rights reserved. | Contact: info@sunlynks.in</p>
-    </footer>
+        <!-- Login Forms -->
+        <div id="adminForm" class="login-form">
+            <h3 style="margin-bottom: 20px; color: #333;">Admin Login</h3>
+            <form onsubmit="handleLogin(event, 'admin')">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" placeholder="Enter admin username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Access Admin Panel</button>
+            </form>
+        </div>
+
+        <div id="companyForm" class="login-form">
+            <h3 style="margin-bottom: 20px; color: #333;">Company Admin Login</h3>
+            <form onsubmit="handleLogin(event, 'company')">
+                <div class="form-group">
+                    <label>Company Email</label>
+                    <input type="email" placeholder="Enter company email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Access Company Dashboard</button>
+            </form>
+        </div>
+
+        <div id="employeeForm" class="login-form">
+            <h3 style="margin-bottom: 20px; color: #333;">Employee Login</h3>
+            <form onsubmit="handleLogin(event, 'employee')">
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input type="text" placeholder="Enter employee ID" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" placeholder="Enter registered mobile" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Access Dashboard</button>
+            </form>
+        </div>
+
+        <!-- Workflow Stages -->
+        <div class="stage-info">
+            <div class="stage">
+                <div class="stage-number">1</div>
+                <div class="stage-title">Sales Team</div>
+                <div class="stage-desc">Site Visit • ID Creation • Document Upload</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">2</div>
+                <div class="stage-title">Finance Team</div>
+                <div class="stage-desc">Loan Processing • Bank Coordination • Disbursement</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">3</div>
+                <div class="stage-title">Execution Team</div>
+                <div class="stage-desc">Installation • Net Metering • Commissioning</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoginForm(type) {
+            document.getElementById('adminForm').classList.remove('active');
+            document.getElementById('companyForm').classList.remove('active');
+            document.getElementById('employeeForm').classList.remove('active');
+            
+            if(type === 'admin') {
+                document.getElementById('adminForm').classList.add('active');
+            } else if(type === 'company') {
+                document.getElementById('companyForm').classList.add('active');
+            } else if(type === 'employee') {
+                document.getElementById('employeeForm').classList.add('active');
+            }
+        }
+
+        function handleLogin(event, userType) {
+            event.preventDefault();
+            
+            // Demo credentials - In production, this would validate against backend
+            switch(userType) {
+                case 'admin':
+                    window.location.href = 'admin-panel.html';
+                    break;
+                case 'company':
+                    window.location.href = 'company-admin.html';
+                    break;
+                case 'employee':
+                    window.location.href = 'employee-dashboard.html';
+                    break;
+            }
+        }
+    </script>
 </body>
 </html>
