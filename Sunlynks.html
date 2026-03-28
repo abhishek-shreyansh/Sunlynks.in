@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Koshish Solar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:#f0fdf4;color:#1f2937}
+/* ===== LOGIN ===== */
+#LOGIN{min-height:100vh;background:linear-gradient(135deg,#065f46,#134e4a);display:flex;align-items:center;justify-content:center}
+.lcard{background:#fff;border-radius:18px;padding:40px 36px;width:400px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.lsun{width:56px;height:56px;background:linear-gradient(135deg,#ea580c,#fbbf24);border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.ltitle{text-align:center;margin-bottom:24px}
+.ltitle h1{font-size:20px;font-weight:800;color:#065f46}
+.ltitle p{font-size:12.5px;color:#6b7280;margin-top:3px}
+.ltabs{display:flex;background:#f3f4f6;border-radius:6px;padding:3px;margin-bottom:20px}
+.ltab{flex:1;padding:8px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;border-radius:5px;color:#6b7280;border:none;background:none;font-family:inherit;transition:all .2s}
+.ltab.active{background:#fff;color:#065f46;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.fgroup{margin-bottom:12px}
+.fgroup label{display:block;font-size:12px;font-weight:700;color:#4b5563;margin-bottom:4px}
+.fgroup input,.fgroup select{width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:14px;font-family:inherit;outline:none;background:#fff;color:#1f2937}
+.fgroup input:focus,.fgroup select:focus{border-color:#059669}
+.signin-btn{width:100%;padding:12px;background:#065f46;color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+.signin-btn:hover{background:#134e4a}
+.demo-note{margin-top:14px;padding:10px 13px;background:#fef3c7;border-radius:6px;font-size:12px;color:#92400e}
+.demo-note strong{color:#065f46}
+/* ===== APP ===== */
+#APP{height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.app-layout{display:flex;flex:1;overflow:hidden}
+/* SIDEBAR */
+.sidebar{width:248px;background:#065f46;color:#fff;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sb-brand{padding:16px 15px 12px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
+.sb-icon{width:34px;height:34px;background:linear-gradient(135deg,#ea580c,#fbbf24);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sb-brand-text h2{font-size:14px;font-weight:800}
+.sb-brand-text small{font-size:10px;opacity:.55}
+.sb-user{margin:10px 12px;padding:9px 10px;background:rgba(255,255,255,.09);border-radius:6px;display:flex;align-items:center;gap:8px}
+.sb-av{width:28px;height:28px;background:#ea580c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.sb-user-info .name{font-size:12px;font-weight:700}
+.sb-user-info .role{font-size:10px;opacity:.5}
+.sb-nav{padding:4px 8px;flex:1}
+.nav-section{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;opacity:.4;padding:10px 7px 4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;opacity:.78;transition:all .18s;margin-bottom:1px;border:none;background:none;color:#fff;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:rgba(255,255,255,.1);opacity:1}
+.nav-item.active{background:rgba(249,115,22,.22);opacity:1;border-left:3px solid #f97316;padding-left:5px}
+.nav-item .nav-ico{width:16px;text-align:center;font-size:13px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:#ea580c;color:#fff;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:20px}
+.sb-footer{padding:8px 10px;border-top:1px solid rgba(255,255,255,.1)}
+.logout-btn{width:100%;padding:8px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.13);border-radius:6px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.logout-btn:hover{background:rgba(255,255,255,.14)}
+/* TOPBAR */
+.topbar{height:58px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.topbar-left h3{font-size:16px;font-weight:800;color:#1f2937}
+.topbar-left p{font-size:11px;color:#9ca3af}
+.new-btn{padding:8px 14px;background:#065f46;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.new-btn:hover{background:#134e4a}
+/* CONTENT */
+.main-content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.content-area{flex:1;overflow-y:auto;padding:20px}
+/* ===== COMPONENTS ===== */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.section-head h2{font-size:18px;font-weight:800;color:#1f2937}
+.section-head p{font-size:12px;color:#6b7280;margin-top:2px}
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:10px;padding:16px 17px;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid #f3f4f6;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card.green::before{background:linear-gradient(90deg,#059669,#34d399)}
+.stat-card.orange::before{background:linear-gradient(90deg,#ea580c,#f97316)}
+.stat-card.blue::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.stat-card.yellow::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.stat-card.purple::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.stat-label{font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.stat-val{font-size:26px;font-weight:800;margin:5px 0 2px}
+.stat-sub{font-size:11px;color:#9ca3af}
+.stat-ico{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:26px;opacity:.1}
+/* PIPELINE */
+.pipeline-wrap{background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 1px 3px rgba(0,0,0,.07);margin-bottom:20px}
+.pipeline-wrap h4{font-size:13px;font-weight:700;color:#374151;margin-bottom:14px}
+.pipeline{display:flex;align-items:flex-start}
+.p-step{flex:1;text-align:center;position:relative}
+.p-step:not(:last-child)::after{content:'';position:absolute;top:12px;left:55%;right:-45%;height:2px;background:#e5e7eb;z-index:0}
+.p-step.done:not(:last-child)::after{background:#059669}
+.p-dot{width:25px;height:25px;border-radius:50%;background:#e5e7eb;color:#9ca3af;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;margin:0 auto 6px;position:relative;z-index:1;border:2px solid #e5e7eb}
+.p-step.done .p-dot{background:#059669;color:#fff;border-color:#059669}
+.p-step.active .p-dot{background:#ea580c;color:#fff;border-color:#ea580c}
+.p-label{font-size:9.5px;color:#6b7280;font-weight:500;line-height:1.3}
+.p-step.done .p-label{color:#065f46}
+.p-step.active .p-label{color:#ea580c;font-weight:700}
+/* TABLE */
+.table-card{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden}
+.table-head{padding:14px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.table-head h4{font-size:14px;font-weight:700}
+.tbl-search{padding:7px 10px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:13px;font-family:inherit;outline:none;width:180px}
+.tbl-search:focus{border-color:#059669}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead{background:#f9fafb}
+th{padding:10px 13px;text-align:left;font-size:11px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+td{padding:11px 13px;font-size:13px;border-bottom:1px solid #f9fafb;color:#374151;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f9fffe}
+.cid-badge{font-size:11px;font-weight:800;color:#065f46;background:#d1fae5;padding:2px 7px;border-radius:20px;white-space:nowrap;display:inline-block}
+/* STATUS BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:800}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.badge.sales{background:#fef3c7;color:#92400e}
+.badge.finance{background:#ede9fe;color:#5b21b6}
+.badge.execution{background:#dbeafe;color:#1e40af}
+.badge.complete{background:#d1fae5;color:#065f46}
+/* BUTTONS */
+.btn{padding:5px 11px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.btn.green{background:#059669;color:#fff}
+.btn.green:hover{background:#065f46}
+.btn.orange{background:#f97316;color:#fff}
+.btn.orange:hover{background:#ea580c}
+.btn.white{background:#fff;color:#4b5563;border:1px solid #d1d5db}
+.btn.white:hover{background:#f9fafb}
+.icon-btn{width:27px;height:27px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:710px;box-shadow:0 20px 60px rgba(0,0,0,.2);margin:auto}
+.modal-hd{padding:16px 20px 12px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0}
+.modal-hd h3{font-size:15px;font-weight:800}
+.modal-close{width:29px;height:29px;border:none;background:#f3f4f6;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:#6b7280;font-family:inherit}
+.modal-close:hover{background:#e5e7eb}
+.modal-body{padding:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row.three{grid-template-columns:1fr 1fr 1fr}
+.form-row.one{grid-template-columns:1fr}
+.field label{display:block;font-size:12px;font-weight:700;color:#4b5563;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:9px 11px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:13px;font-family:inherit;outline:none;color:#1f2937;background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#059669}
+.field textarea{resize:vertical;min-height:70px}
+.field input.readonly{background:#f9fafb;color:#065f46;font-weight:700}
+.amount-box{background:#fef3c7;border:1px solid #fde68a;padding:11px 14px;border-radius:6px;margin-bottom:12px}
+.amount-box .alabel{font-size:12px;color:#92400e;font-weight:600}
+.amount-box .aval{font-size:20px;color:#ea580c;font-weight:800;display:block;margin-top:2px}
+/* DOCS */
+.doc-section{margin-bottom:16px}
+.doc-section h4{font-size:12.5px;font-weight:700;color:#374151;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid #f3f4f6}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px}
+.doc-box{border:2px dashed #e5e7eb;border-radius:6px;padding:12px 7px;text-align:center;cursor:pointer;transition:all .2s;user-select:none}
+.doc-box:hover{border-color:#059669;background:#f0fdf4}
+.doc-box.uploaded{border-color:#059669;background:#f0fdf4;border-style:solid}
+.doc-ico{font-size:18px;margin-bottom:4px}
+.doc-name{font-size:10.5px;font-weight:700;color:#4b5563}
+.doc-status{font-size:9.5px;color:#9ca3af;margin-top:1px}
+.doc-box.uploaded .doc-status{color:#059669}
+/* ALERT BOX */
+.alert-panel{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:13px 16px;margin-bottom:18px}
+.alert-panel .alert-title{font-size:13px;font-weight:800;color:#c2410c;margin-bottom:8px}
+.alert-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #fde68a}
+.alert-row:last-child{border-bottom:none}
+/* EXEC ALERT */
+.exec-panel{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:13px 16px;margin-bottom:18px}
+.exec-panel .alert-title{font-size:13px;font-weight:800;color:#065f46;margin-bottom:8px}
+.exec-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #bbf7d0}
+.exec-row:last-child{border-bottom:none}
+/* KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:11px}
+.k-col{background:#f9fafb;border-radius:10px;padding:11px;border:1px solid #f3f4f6}
+.k-col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.k-col-head h5{font-size:10.5px;font-weight:800;color:#4b5563;text-transform:uppercase;letter-spacing:.04em}
+.k-count{background:#e5e7eb;color:#4b5563;font-size:10px;font-weight:800;padding:1px 5px;border-radius:20px}
+.k-card{background:#fff;border-radius:6px;padding:9px;box-shadow:0 1px 3px rgba(0,0,0,.07);margin-bottom:6px;cursor:pointer;border:1px solid #f3f4f6;transition:all .18s}
+.k-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-1px)}
+.k-id{font-size:10px;color:#065f46;font-weight:800;margin-bottom:3px}
+.k-name{font-size:12px;font-weight:700;color:#1f2937;margin-bottom:2px}
+.k-loc{font-size:10px;color:#9ca3af}
+.k-kw{font-size:10px;color:#ea580c;font-weight:700}
+/* PROGRESS BAR */
+.pbar{background:#e5e7eb;border-radius:20px;height:5px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#059669,#34d399)}
+/* DETAIL PANEL */
+.detail-panel{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:20px;margin-bottom:18px}
+.detail-panel h4{font-size:14px;font-weight:800;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f3f4f6}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.detail-row .dl{font-size:11px;color:#9ca3af;margin-bottom:2px}
+.detail-row .dv{font-size:13.5px;font-weight:600}
+/* COMPANY CARDS */
+.company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:13px}
+.company-card{background:#fff;border-radius:10px;padding:17px;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid #f3f4f6;cursor:pointer;transition:all .2s}
+.company-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-2px);border-color:#059669}
+.company-card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.company-av{width:40px;height:40px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.company-card h4{font-size:14px;font-weight:800}
+.company-card small{font-size:11.5px;color:#6b7280}
+.company-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.cs-item{text-align:center;padding:7px 4px;background:#f9fafb;border-radius:6px}
+.cs-val{font-size:14px;font-weight:800;color:#065f46}
+.cs-lbl{font-size:9px;color:#9ca3af;font-weight:600}
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:#065f46;color:#fff;padding:10px 17px;border-radius:9px;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;z-index:9999;max-width:320px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="LOGIN">
+  <div class="lcard">
+    <div class="ltitle">
+      <div class="lsun">☀️</div>
+      <h1>Koshish Solar</h1>
+      <p>Solar Project Management System</p>
+    </div>
+    <div class="ltabs">
+      <button class="ltab active" id="tab-admin">Admin Panel</button>
+      <button class="ltab" id="tab-company">Company Panel</button>
+    </div>
+    <div id="form-admin">
+      <div class="fgroup"><label>Admin Email</label><input type="text" value="admin@koshish.in"></div>
+      <div class="fgroup"><label>Password</label><input type="password" value="admin123"></div>
+    </div>
+    <div id="form-company" style="display:none">
+      <div class="fgroup"><label>Company</label>
+        <select id="inp-company"><option>Koshish Solar Pvt. Ltd.</option><option>SunRise Energy</option><option>GreenPower Solutions</option></select>
+      </div>
+      <div class="fgroup"><label>Department</label>
+        <select id="inp-dept">
+          <option value="sales">Sales Team</option>
+          <option value="finance">Finance Team</option>
+          <option value="execution">Execution Team</option>
+          <option value="manager">Company Manager</option>
+        </select>
+      </div>
+      <div class="fgroup"><label>Password</label><input type="password" value="pass123"></div>
+    </div>
+    <button class="signin-btn" id="btn-signin">Sign In →</button>
+    <div class="demo-note"><strong>Demo:</strong> Click Sign In. Switch tabs to try Admin or Company (Sales / Finance / Execution) panels.</div>
+  </div>
+</div>
+
+<!-- ==================== APP ==================== -->
+<div id="APP" style="display:none">
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-brand">
+        <div class="sb-icon">☀️</div>
+        <div class="sb-brand-text">
+          <h2 id="sb-title">Admin Panel</h2>
+          <small id="sb-subtitle">Parent Company</small>
+        </div>
+      </div>
+      <div class="sb-user">
+        <div class="sb-av" id="sb-avatar">AD</div>
+        <div class="sb-user-info">
+          <div class="name" id="sb-username">Admin User</div>
+          <div class="role" id="sb-role">Super Admin</div>
+        </div>
+      </div>
+      <nav class="sb-nav" id="sb-nav"></nav>
+      <div class="sb-footer">
+        <button class="logout-btn" id="btn-logout">⇠ Sign Out</button>
+      </div>
+    </aside>
+    <!-- MAIN -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-left">
+          <h3 id="page-title">Dashboard</h3>
+          <p id="page-sub">Overview</p>
+        </div>
+        <button class="new-btn" id="btn-new-client" style="display:none">+ New Client</button>
+      </div>
+      <div class="content-area" id="content-area"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: NEW CLIENT ==================== -->
+<div class="overlay" id="modal-new">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>🆕 Create New Client</h3>
+      <button class="modal-close" id="close-new">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="field"><label>Client Full Name *</label><input type="text" id="inp-name" placeholder="Ramesh Kumar Sharma"></div>
+        <div class="field"><label>Mobile Number *</label><input type="tel" id="inp-mobile" placeholder="9876543210"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Email ID</label><input type="email" id="inp-email" placeholder="ramesh@gmail.com"></div>
+        <div class="field"><label>Location</label><input type="text" id="inp-location" placeholder="Village, District, State"></div>
+      </div>
+      <div class="form-row three">
+        <div class="field"><label>Order Type</label>
+          <select id="inp-order"><option>Residential</option><option>Commercial</option><option>Industrial</option><option>Govt. Scheme</option></select>
+        </div>
+        <div class="field"><label>Capacity (kWp)</label><input type="number" id="inp-kw" placeholder="5"></div>
+        <div class="field"><label>Client ID (Auto)</label><input class="readonly" id="inp-clientid" readonly value="KS-XXXXXXXX"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Total Project Amount (₹)</label><input type="number" id="inp-total" placeholder="350000"></div>
+        <div class="field"><label>Amount Received (₹)</label><input type="number" id="inp-received" placeholder="100000"></div>
+      </div>
+      <div class="amount-box" id="rem-box" style="display:none">
+        <div class="alabel">💰 Amount Remaining</div>
+        <strong class="aval" id="rem-val">₹0</strong>
+      </div>
+      <div class="doc-section">
+        <h4>📎 Required Documents</h4>
+        <div class="doc-grid">
+          <div class="doc-box" id="doc1"><div class="doc-ico">🪪</div><div class="doc-name">Aadhaar Card</div><div class="doc-status">Click to upload</div></div>
+          <div class="doc-box" id="doc2"><div class="doc-ico">💳</div><div class="doc-name">PAN Card</div><div class="doc-status">Click to upload</div></div>
+          <div class="doc-box" id="doc3"><div class="doc-ico">⚡</div><div class="doc-name">Bijli Bill</div><div class="doc-status">Click to upload</div></div>
+          <div class="doc-box" id="doc4"><div class="doc-ico">🏦</div><div class="doc-name">Bank Account</div><div class="doc-status">Click to upload</div></div>
+          <div class="doc-box" id="doc5"><div class="doc-ico">📄</div><div class="doc-name">Bank Statement</div><div class="doc-status">Click to upload</div></div>
+          <div class="doc-box" id="doc6"><div class="doc-ico">📁</div><div class="doc-name">Other Doc</div><div class="doc-status">Click to add</div></div>
+        </div>
+        <div id="other-doc-form" style="display:none;margin-top:8px">
+          <div class="form-row">
+            <div class="field"><label>Document Name</label><input type="text" id="inp-othername" placeholder="e.g. NOC Certificate"></div>
+            <div class="field"><label>Upload File</label><input type="file"></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row one">
+        <div class="field"><label>Sales Remarks</label><textarea id="inp-remarks" placeholder="Notes about client..."></textarea></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
+        <button class="btn white" id="cancel-new">Cancel</button>
+        <button class="btn orange" id="save-new">Save &amp; Forward to Finance →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: FINANCE ==================== -->
+<div class="overlay" id="modal-fin">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>💼 Finance — <span id="fin-cid">KS-XXXX</span></h3>
+      <button class="modal-close" id="close-fin">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid" style="margin-bottom:14px">
+        <div class="detail-row"><div class="dl">Client</div><div class="dv" id="fin-name">—</div></div>
+        <div class="detail-row"><div class="dl">Location</div><div class="dv" id="fin-loc">—</div></div>
+        <div class="detail-row"><div class="dl">Project</div><div class="dv" id="fin-proj">—</div></div>
+        <div class="detail-row"><div class="dl">Total Amount</div><div class="dv" id="fin-total">—</div></div>
+      </div>
+      <div class="amount-box">
+        <div class="alabel">💰 Amount Remaining</div>
+        <strong class="aval" id="fin-rem">₹0</strong>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Add Payment Received (₹)</label><input type="number" id="fin-pay" placeholder="50000"></div>
+        <div class="field"><label>Payment Mode</label><select><option>Bank Transfer</option><option>Cheque</option><option>Cash</option><option>UPI</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Update Status</label>
+          <select id="fin-status"><option>Under Review</option><option>Documents Verified</option><option>Payment Pending</option><option>Ready for Execution</option><option>Rejected</option></select>
+        </div>
+        <div class="field"><label>Upload Additional Doc</label><input type="file"></div>
+      </div>
+      <div class="form-row one">
+        <div class="field"><label>Remark * (required before forwarding)</label><textarea id="fin-remark" placeholder="Add your remark here..."></textarea></div>
+      </div>
+      <div class="doc-section">
+        <h4>📂 Client Documents (from Sales)</h4>
+        <div class="doc-grid">
+          <div class="doc-box uploaded"><div class="doc-ico">🪪</div><div class="doc-name">Aadhaar Card</div><div class="doc-status">✓ Uploaded</div></div>
+          <div class="doc-box uploaded"><div class="doc-ico">💳</div><div class="doc-name">PAN Card</div><div class="doc-status">✓ Uploaded</div></div>
+          <div class="doc-box uploaded"><div class="doc-ico">⚡</div><div class="doc-name">Bijli Bill</div><div class="doc-status">✓ Uploaded</div></div>
+          <div class="doc-box"><div class="doc-ico">🏦</div><div class="doc-name">Bank Account</div><div class="doc-status">Pending</div></div>
+          <div class="doc-box uploaded"><div class="doc-ico">📄</div><div class="doc-name">Bank Statement</div><div class="doc-status">✓ Uploaded</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
+        <button class="btn white" id="cancel-fin">Cancel</button>
+        <button class="btn green" id="fwd-fin">Forward to Execution →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: EXECUTION ==================== -->
+<div class="overlay" id="modal-exec">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>⚡ Execution — <span id="exec-cid">KS-XXXX</span></h3>
+      <button class="modal-close" id="close-exec">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pipeline-wrap" style="margin-bottom:13px">
+        <h4>Execution Progress</h4>
+        <div class="pipeline" id="exec-pipeline">
+          <div class="p-step"><div class="p-dot">1</div><div class="p-label">Site Survey</div></div>
+          <div class="p-step"><div class="p-dot">2</div><div class="p-label">Structure</div></div>
+          <div class="p-step"><div class="p-dot">3</div><div class="p-label">Wiring</div></div>
+          <div class="p-step"><div class="p-dot">4</div><div class="p-label">Install</div></div>
+          <div class="p-step"><div class="p-dot">5</div><div class="p-label">Net Meter</div></div>
+          <div class="p-step"><div class="p-dot">6</div><div class="p-label">Subsidy</div></div>
+          <div class="p-step"><div class="p-dot">7</div><div class="p-label">Complete</div></div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Update Stage To</label>
+          <select id="exec-stage">
+            <option value="1">1. Site Survey Completed</option>
+            <option value="2">2. Structure Order Placed</option>
+            <option value="3">3. Wiring &amp; Module Procurement</option>
+            <option value="4">4. Installation Done</option>
+            <option value="5">5. Net Metering Applied</option>
+            <option value="6">6. Subsidy Disbursal Initiated</option>
+            <option value="7">7. Project Complete ✓</option>
+          </select>
+        </div>
+        <div class="field"><label>Upload Site Photo / Doc</label><input type="file"></div>
+      </div>
+      <div class="form-row one">
+        <div class="field"><label>Remark</label><textarea id="exec-remark" placeholder="Stage update notes..."></textarea></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
+        <button class="btn white" id="cancel-exec">Cancel</button>
+        <button class="btn green" id="save-exec">Update Stage ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ========== STATE ==========
+var STATE = {
+  role: 'admin',
+  dept: 'manager',
+  view: '',
+  editIdx: -1,
+  clients: [
+    {id:'KS-98765432',name:'Ramesh Kumar Sharma',mobile:'9876543210',email:'ramesh@gmail.com',location:'Jaipur, Rajasthan',order:'Residential',kw:'5 kWp',total:350000,received:100000,status:'finance',stage:0,remark:'Initial site visit done.'},
+    {id:'KS-87654321',name:'Sunita Devi Patel',mobile:'8765432109',email:'sunita@yahoo.com',location:'Ahmedabad, Gujarat',order:'Commercial',kw:'10 kWp',total:700000,received:350000,status:'finance',stage:0,remark:'Loan sanctioned from SBI.'},
+    {id:'KS-76543210',name:'Mohan Lal Verma',mobile:'7654321098',email:'mohan@gmail.com',location:'Indore, MP',order:'Residential',kw:'3 kWp',total:210000,received:210000,status:'execution',stage:3,remark:'Full payment received.'},
+    {id:'KS-65432109',name:'Priya Singh',mobile:'6543210987',email:'priya@gmail.com',location:'Lucknow, UP',order:'Govt. Scheme',kw:'1 kWp',total:75000,received:75000,status:'execution',stage:6,remark:'PM Surya Ghar Scheme.'},
+    {id:'KS-54321098',name:'Akhilesh Tiwari',mobile:'5432109876',email:'akhil@gmail.com',location:'Varanasi, UP',order:'Residential',kw:'4 kWp',total:280000,received:50000,status:'sales',stage:0,remark:''},
+    {id:'KS-43210987',name:'Geeta Kumari',mobile:'4321098765',email:'geeta@gmail.com',location:'Patna, Bihar',order:'Residential',kw:'2 kWp',total:140000,received:140000,status:'complete',stage:7,remark:'Project successfully completed.'}
+  ]
+};
+
+// ========== INIT ==========
+window.onload = function() {
+  // LOGIN TABS
+  document.getElementById('tab-admin').addEventListener('click', function() {
+    STATE.role = 'admin';
+    document.getElementById('tab-admin').className = 'ltab active';
+    document.getElementById('tab-company').className = 'ltab';
+    document.getElementById('form-admin').style.display = '';
+    document.getElementById('form-company').style.display = 'none';
+  });
+  document.getElementById('tab-company').addEventListener('click', function() {
+    STATE.role = 'company';
+    document.getElementById('tab-admin').className = 'ltab';
+    document.getElementById('tab-company').className = 'ltab active';
+    document.getElementById('form-admin').style.display = 'none';
+    document.getElementById('form-company').style.display = '';
+  });
+
+  // SIGN IN
+  document.getElementById('btn-signin').addEventListener('click', function() {
+    if (STATE.role === 'company') {
+      STATE.dept = document.getElementById('inp-dept').value;
+    }
+    document.getElementById('LOGIN').style.display = 'none';
+    document.getElementById('APP').style.display = '';
+    initApp();
+  });
+
+  // LOGOUT
+  document.getElementById('btn-logout').addEventListener('click', function() {
+    document.getElementById('APP').style.display = 'none';
+    document.getElementById('LOGIN').style.display = '';
+    STATE.role = 'admin';
+    document.getElementById('tab-admin').className = 'ltab active';
+    document.getElementById('tab-company').className = 'ltab';
+    document.getElementById('form-admin').style.display = '';
+    document.getElementById('form-company').style.display = 'none';
+  });
+
+  // NEW CLIENT BUTTON
+  document.getElementById('btn-new-client').addEventListener('click', openModalNew);
+
+  // MODAL: NEW CLIENT
+  document.getElementById('close-new').addEventListener('click', function() { closeModal('modal-new'); });
+  document.getElementById('cancel-new').addEventListener('click', function() { closeModal('modal-new'); });
+  document.getElementById('save-new').addEventListener('click', saveNewClient);
+  document.getElementById('inp-mobile').addEventListener('input', autoGenId);
+  document.getElementById('inp-email').addEventListener('input', autoGenId);
+  document.getElementById('inp-total').addEventListener('input', calcRemaining);
+  document.getElementById('inp-received').addEventListener('input', calcRemaining);
+  ['doc1','doc2','doc3','doc4','doc5'].forEach(function(id) {
+    document.getElementById(id).addEventListener('click', function() {
+      this.className = 'doc-box uploaded';
+      this.querySelector('.doc-status').textContent = '✓ Uploaded';
+      showToast('Document uploaded ✓');
+    });
+  });
+  document.getElementById('doc6').addEventListener('click', function() {
+    var f = document.getElementById('other-doc-form');
+    f.style.display = f.style.display === 'none' ? '' : 'none';
+  });
+
+  // MODAL: FINANCE
+  document.getElementById('close-fin').addEventListener('click', function() { closeModal('modal-fin'); });
+  document.getElementById('cancel-fin').addEventListener('click', function() { closeModal('modal-fin'); });
+  document.getElementById('fwd-fin').addEventListener('click', forwardToExecution);
+  document.getElementById('fin-pay').addEventListener('input', function() {
+    if (STATE.editIdx < 0) return;
+    var c = STATE.clients[STATE.editIdx];
+    var pay = parseInt(this.value) || 0;
+    document.getElementById('fin-rem').textContent = '₹' + Math.max(0, c.total - c.received - pay).toLocaleString('en-IN');
+  });
+
+  // MODAL: EXECUTION
+  document.getElementById('close-exec').addEventListener('click', function() { closeModal('modal-exec'); });
+  document.getElementById('cancel-exec').addEventListener('click', function() { closeModal('modal-exec'); });
+  document.getElementById('save-exec').addEventListener('click', updateExecStage);
+};
+
+function initApp() {
+  var isAdmin = STATE.role === 'admin';
+  var deptLabels = {sales:'Sales Team', finance:'Finance Team', execution:'Execution Team', manager:'Manager'};
+  var deptInits = {sales:'SA', finance:'FI', execution:'EX', manager:'MG'};
+
+  document.getElementById('sb-title').textContent = isAdmin ? 'Admin Panel' : 'Koshish Solar';
+  document.getElementById('sb-subtitle').textContent = isAdmin ? 'Parent Company' : (deptLabels[STATE.dept] || STATE.dept);
+  document.getElementById('sb-avatar').textContent = isAdmin ? 'AD' : (deptInits[STATE.dept] || 'TM');
+  document.getElementById('sb-username').textContent = isAdmin ? 'Admin User' : (deptLabels[STATE.dept] || STATE.dept);
+  document.getElementById('sb-role').textContent = isAdmin ? 'Super Admin' : 'Koshish Solar';
+
+  buildSidebar(isAdmin);
+  navigate(isAdmin ? 'dashboard' : 'dept-dashboard');
+}
+
+// ========== SIDEBAR ==========
+function buildSidebar(isAdmin) {
+  var finCount = STATE.clients.filter(function(c) { return c.status === 'finance'; }).length;
+  var excCount = STATE.clients.filter(function(c) { return c.status === 'execution'; }).length;
+  var salCount = STATE.clients.filter(function(c) { return c.status === 'sales'; }).length;
+  var html = '';
+
+  if (isAdmin) {
+    html = navSection('Overview') + navItem('dashboard','📊','Dashboard') + navItem('companies','🏢','Companies',3)
+         + navSection('Management') + navItem('all-clients','👥','All Clients') + navItem('reports','📈','Reports') + navItem('settings','⚙️','Settings');
+  } else if (STATE.dept === 'sales') {
+    html = navSection('Sales') + navItem('dept-dashboard','📊','Dashboard') + navItem('all-clients','👥','My Clients',salCount)
+         + '<button class="nav-item" onclick="openModalNew()"><span class="nav-ico">➕</span> New Client</button>';
+  } else if (STATE.dept === 'finance') {
+    html = navSection('Finance') + navItem('dept-dashboard','📊','Dashboard') + navItem('fin-queue','💼','Finance Queue',finCount);
+  } else if (STATE.dept === 'execution') {
+    html = navSection('Execution') + navItem('dept-dashboard','📊','Dashboard') + navItem('exec-board','⚡','Project Board',excCount);
+  } else {
+    html = navSection('Company') + navItem('dept-dashboard','📊','Dashboard') + navItem('all-clients','👥','All Clients')
+         + navItem('reports','📈','Reports') + navItem('settings','⚙️','Settings');
+  }
+  document.getElementById('sb-nav').innerHTML = html;
+}
+
+function navSection(label) { return '<div class="nav-section">' + label + '</div>'; }
+function navItem(v, ico, label, badge) {
+  var b = badge !== undefined ? '<span class="nav-badge">' + badge + '</span>' : '';
+  return '<button class="nav-item" onclick="navigate(\'' + v + '\')">'
+       + '<span class="nav-ico">' + ico + '</span> ' + label + b + '</button>';
+}
+
+// ========== NAVIGATE ==========
+function navigate(v) {
+  STATE.view = v;
+  // highlight active nav
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) {
+    if (n.getAttribute('onclick') === "navigate('" + v + "')") n.classList.add('active');
+  });
+
+  var ca = document.getElementById('content-area');
+  var nb = document.getElementById('btn-new-client');
+  var pt = document.getElementById('page-title');
+  var ps = document.getElementById('page-sub');
+  nb.style.display = 'none';
+
+  if (v === 'dashboard') {
+    pt.textContent = 'Admin Dashboard'; ps.textContent = 'All companies overview';
+    ca.innerHTML = buildAdminDash();
+  } else if (v === 'companies') {
+    pt.textContent = 'Companies'; ps.textContent = 'Manage registered companies';
+    ca.innerHTML = buildCompanies();
+  } else if (v === 'all-clients') {
+    var isMyClients = STATE.role === 'company' && STATE.dept === 'sales';
+    pt.textContent = isMyClients ? 'My Clients' : 'All Clients'; ps.textContent = 'Client records';
+    if (isMyClients) nb.style.display = '';
+    var list = isMyClients ? STATE.clients.filter(function(c) { return c.status === 'sales'; }) : STATE.clients;
+    ca.innerHTML = buildTable(list);
+  } else if (v === 'fin-queue') {
+    pt.textContent = 'Finance Queue'; ps.textContent = 'Files awaiting finance action';
+    ca.innerHTML = buildTable(STATE.clients.filter(function(c) { return c.status === 'finance'; }));
+  } else if (v === 'exec-board') {
+    pt.textContent = 'Execution Board'; ps.textContent = 'Track project stages';
+    ca.innerHTML = buildExecBoard();
+  } else if (v === 'reports') {
+    pt.textContent = 'Reports'; ps.textContent = 'Business analytics';
+    ca.innerHTML = buildReports();
+  } else if (v === 'settings') {
+    pt.textContent = 'Settings'; ps.textContent = 'System configuration';
+    ca.innerHTML = buildSettings();
+  } else if (v === 'dept-dashboard') {
+    var deptNames = {sales:'Sales', finance:'Finance', execution:'Execution', manager:'Company'};
+    pt.textContent = (deptNames[STATE.dept] || 'Team') + ' Dashboard';
+    ps.textContent = 'Koshish Solar Pvt. Ltd.';
+    if (STATE.dept === 'sales' || STATE.dept === 'manager') nb.style.display = '';
+    ca.innerHTML = buildDeptDash();
+  }
+}
+
+// ========== VIEWS ==========
+function statCard(color, label, val, sub, ico) {
+  return '<div class="stat-card ' + color + '"><div class="stat-label">' + label + '</div>'
+       + '<div class="stat-val">' + val + '</div><div class="stat-sub">' + sub + '</div>'
+       + '<div class="stat-ico">' + ico + '</div></div>';
+}
+
+function pipeline(doneUpTo) {
+  var steps = ['Sales','Docs','Finance','Payment','Execution','Net Meter','Complete'];
+  var html = '<div class="pipeline-wrap"><h4>Pipeline Status</h4><div class="pipeline">';
+  steps.forEach(function(s, i) {
+    var cls = i < doneUpTo ? 'p-step done' : i === doneUpTo ? 'p-step active' : 'p-step';
+    var dot = i < doneUpTo ? '✓' : (i + 1);
+    html += '<div class="' + cls + '"><div class="p-dot">' + dot + '</div><div class="p-label">' + s + '</div></div>';
+  });
+  return html + '</div></div>';
+}
+
+function buildAdminDash() {
+  var C = STATE.clients;
+  var rev = C.reduce(function(a,c){return a+c.received;},0);
+  var pen = C.reduce(function(a,c){return a+(c.total-c.received);},0);
+  return '<div class="section-head"><div><h2>Admin Overview</h2><p>All companies real-time summary</p></div></div>'
+    + '<div class="stats-grid">'
+    + statCard('green','Total Clients',C.length,'All companies','👥')
+    + statCard('orange','Revenue Collected','₹'+(rev/100000).toFixed(1)+'L','This year','💰')
+    + statCard('blue','Amount Pending','₹'+(pen/100000).toFixed(1)+'L','Balance due','📊')
+    + statCard('yellow','In Finance',C.filter(function(c){return c.status==='finance';}).length,'Awaiting action','💼')
+    + statCard('purple','In Execution',C.filter(function(c){return c.status==='execution';}).length,'Active','⚡')
+    + statCard('green','Completed',C.filter(function(c){return c.status==='complete';}).length,'Done','✅')
+    + '</div>' + pipeline(2) + buildTable(C);
+}
+
+function buildDeptDash() {
+  var C = STATE.clients;
+  var my = STATE.dept === 'finance' ? C.filter(function(c){return c.status==='finance';})
+         : STATE.dept === 'execution' ? C.filter(function(c){return c.status==='execution';}) : C;
+  var rev = my.reduce(function(a,c){return a+c.received;},0);
+  var pen = my.reduce(function(a,c){return a+(c.total-c.received);},0);
+  var tot = my.reduce(function(a,c){return a+c.total;},0);
+  var deptNames = {sales:'Sales',finance:'Finance',execution:'Execution',manager:'Company'};
+  var alert = '';
+
+  if (STATE.dept === 'finance') {
+    var urg = C.filter(function(c){return c.status==='finance';});
+    if (urg.length) {
+      alert = '<div class="alert-panel"><div class="alert-title">🔔 Action Required — ' + urg.length + ' file(s) pending finance review</div>';
+      urg.forEach(function(c) {
+        var idx = STATE.clients.indexOf(c);
+        alert += '<div class="alert-row"><span class="cid-badge">' + c.id + '</span>'
+               + '<span style="font-size:13px;font-weight:600;flex:1">' + c.name + '</span>'
+               + '<span style="font-size:12px;color:#92400e">₹' + ((c.total-c.received)/100000).toFixed(1) + 'L left</span>'
+               + '<button class="btn orange" onclick="openModalFin(' + idx + ')">Take Action</button></div>';
+      });
+      alert += '</div>';
+    }
+  }
+  if (STATE.dept === 'execution') {
+    var ex = C.filter(function(c){return c.status==='execution';});
+    if (ex.length) {
+      alert = '<div class="exec-panel"><div class="alert-title">⚡ ' + ex.length + ' project(s) in execution queue</div>';
+      ex.forEach(function(c) {
+        var idx = STATE.clients.indexOf(c);
+        var pct = Math.round(c.stage / 7 * 100);
+        alert += '<div class="exec-row"><span class="cid-badge">' + c.id + '</span>'
+               + '<span style="font-size:13px;font-weight:600;flex:1">' + c.name + '</span>'
+               + '<span style="font-size:12px;color:#059669">Stage ' + c.stage + '/7</span>'
+               + '<div class="pbar" style="width:65px"><div class="pbar-fill" style="width:' + pct + '%"></div></div>'
+               + '<button class="btn green" onclick="openModalExec(' + idx + ')">Update</button></div>';
+      });
+      alert += '</div>';
+    }
+  }
+
+  return '<div class="section-head"><div><h2>' + (deptNames[STATE.dept]||'Team') + ' Dashboard</h2><p>Koshish Solar Pvt. Ltd.</p></div></div>'
+    + '<div class="stats-grid">'
+    + statCard('green','Active Files',my.length,'In queue','📁')
+    + statCard('orange','Total Amount','₹'+(tot/100000).toFixed(1)+'L','Project value','💰')
+    + statCard('blue','Collected','₹'+(rev/100000).toFixed(1)+'L','Received','✅')
+    + statCard('yellow','Pending','₹'+(pen/100000).toFixed(1)+'L','Balance','⏳')
+    + '</div>' + alert + buildTable(my);
+}
+
+function buildTable(list) {
+  if (!list.length) return '<div class="table-card"><div class="table-head"><h4>Client Files (0)</h4></div><div style="padding:28px;text-align:center;color:#9ca3af">No records found</div></div>';
+  var rows = list.map(function(c) {
+    var idx = STATE.clients.indexOf(c);
+    var rem = c.total - c.received;
+    return '<tr><td><span class="cid-badge">' + c.id + '</span></td>'
+         + '<td><strong>' + c.name + '</strong><br><small style="color:#9ca3af">📱 ' + c.mobile + '</small></td>'
+         + '<td style="font-size:12px">📍 ' + c.location + '</td>'
+         + '<td><span style="font-size:12px;font-weight:700;color:#065f46">' + c.order + '</span><br><small style="color:#ea580c">☀️ ' + c.kw + '</small></td>'
+         + '<td style="font-weight:700">₹' + c.total.toLocaleString('en-IN') + '</td>'
+         + '<td style="color:#059669;font-weight:700">₹' + c.received.toLocaleString('en-IN') + '</td>'
+         + '<td style="color:' + (rem > 0 ? '#dc2626' : '#059669') + ';font-weight:700">₹' + rem.toLocaleString('en-IN') + '</td>'
+         + '<td>' + getStatusBadge(c.status) + '</td>'
+         + '<td><div style="display:flex;gap:5px;flex-wrap:wrap">'
+         + (c.status === 'finance' ? '<button class="btn orange" onclick="openModalFin(' + idx + ')">Finance</button>' : '')
+         + (c.status === 'execution' ? '<button class="btn green" onclick="openModalExec(' + idx + ')">Update</button>' : '')
+         + '<button class="icon-btn" onclick="showToast(\'Viewing ' + c.name + '\')">👁</button>'
+         + '</div></td></tr>';
+  }).join('');
+  return '<div class="table-card">'
+       + '<div class="table-head"><h4>Client Files (' + list.length + ')</h4>'
+       + '<input class="tbl-search" placeholder="🔍 Search..." oninput="filterTable(this.value)">'
+       + '</div><div class="tbl-wrap"><table><thead><tr>'
+       + '<th>Client ID</th><th>Name</th><th>Location</th><th>Project</th><th>Total</th><th>Received</th><th>Remaining</th><th>Status</th><th>Actions</th>'
+       + '</tr></thead><tbody id="tbl-body">' + rows + '</tbody></table></div></div>';
+}
+
+function filterTable(q) {
+  document.querySelectorAll('#tbl-body tr').forEach(function(r) {
+    r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+function getStatusBadge(s) {
+  var map = {
+    sales: '<span class="badge sales"><span class="badge-dot"></span>Sales</span>',
+    finance: '<span class="badge finance"><span class="badge-dot"></span>Finance</span>',
+    execution: '<span class="badge execution"><span class="badge-dot"></span>Execution</span>',
+    complete: '<span class="badge complete"><span class="badge-dot"></span>Complete</span>'
+  };
+  return map[s] || s;
+}
+
+function buildExecBoard() {
+  var stages = ['Site Survey','Structure Order','Wiring & Module','Installation','Net Metering','Subsidy','Complete'];
+  var list = STATE.clients.filter(function(c) { return c.status === 'execution' || c.status === 'complete'; });
+  var html = '<div class="section-head"><div><h2>Execution Board</h2><p>Track all project stages</p></div></div><div class="kanban">';
+  stages.forEach(function(s, i) {
+    var cards = list.filter(function(c) { return c.stage === (i + 1); });
+    html += '<div class="k-col"><div class="k-col-head"><h5>' + s + '</h5><span class="k-count">' + cards.length + '</span></div>';
+    if (!cards.length) html += '<div style="font-size:11px;color:#9ca3af;text-align:center;padding:8px">Empty</div>';
+    cards.forEach(function(c) {
+      var idx = STATE.clients.indexOf(c);
+      html += '<div class="k-card" onclick="openModalExec(' + idx + ')">'
+            + '<div class="k-id">' + c.id + '</div>'
+            + '<div class="k-name">' + c.name + '</div>'
+            + '<div class="k-loc">📍 ' + c.location + '</div>'
+            + '<div class="k-kw">☀️ ' + c.kw + '</div></div>';
+    });
+    html += '</div>';
+  });
+  return html + '</div>';
+}
+
+function buildReports() {
+  var C = STATE.clients;
+  var tot = C.reduce(function(a,c){return a+c.total;},0);
+  var rec = C.reduce(function(a,c){return a+c.received;},0);
+  var rows = C.map(function(c) {
+    var pct = Math.round(c.received / c.total * 100);
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f9fafb">'
+         + '<span class="cid-badge" style="flex-shrink:0">' + c.id + '</span>'
+         + '<span style="font-size:13px;width:155px;flex-shrink:0">' + c.name + '</span>'
+         + '<div class="pbar" style="flex:1"><div class="pbar-fill" style="width:' + pct + '%"></div></div>'
+         + '<span style="font-size:12px;color:#065f46;font-weight:800;width:35px;text-align:right">' + pct + '%</span></div>';
+  }).join('');
+  return '<div class="section-head"><div><h2>Reports & Analytics</h2></div></div>'
+    + '<div class="stats-grid">'
+    + statCard('green','Total Portfolio','₹'+(tot/100000).toFixed(1)+'L','','📊')
+    + statCard('orange','Collected','₹'+(rec/100000).toFixed(1)+'L','','💰')
+    + statCard('blue','Collection %',Math.round(rec/tot*100)+'%','','📈')
+    + statCard('yellow','Total kWp',C.reduce(function(a,c){return a+parseFloat(c.kw);},0)+' kWp','','☀️')
+    + '</div><div class="detail-panel"><h4>Collection Progress per Project</h4>' + rows + '</div>';
+}
+
+function buildSettings() {
+  return '<div class="section-head"><div><h2>Settings</h2></div></div>'
+    + '<div class="detail-panel"><h4>Company Configuration</h4>'
+    + '<div class="form-row"><div class="field"><label>Company Name</label><input value="Koshish Solar Pvt. Ltd."></div>'
+    + '<div class="field"><label>GST Number</label><input value="08AABCK7234A1ZV"></div></div>'
+    + '<div class="form-row"><div class="field"><label>Email</label><input value="info@koshishsolar.in"></div>'
+    + '<div class="field"><label>Phone</label><input value="+91 98765 43210"></div></div>'
+    + '<div style="margin-top:13px;display:flex;justify-content:flex-end">'
+    + '<button class="btn green" onclick="showToast(\'Settings saved! ✓\')">Save Settings</button></div></div>';
+}
+
+function buildCompanies() {
+  var cos = [
+    {name:'Koshish Solar',loc:'Jaipur, Rajasthan',cl:6,rev:'9.2L',pen:'4.1L',color:'#065f46'},
+    {name:'SunRise Energy',loc:'Ahmedabad, Gujarat',cl:12,rev:'22.5L',pen:'8.6L',color:'#ea580c'},
+    {name:'GreenPower Solutions',loc:'Mumbai, Maharashtra',cl:8,rev:'15.1L',pen:'6.3L',color:'#1d4ed8'}
+  ];
+  var html = '<div class="section-head"><div><h2>Registered Companies</h2><p>3 active companies</p></div>'
+           + '<button class="new-btn" onclick="showToast(\'Add Company feature coming soon\')">+ Add Company</button></div>'
+           + '<div class="company-grid">';
+  cos.forEach(function(c) {
+    var init = c.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2);
+    html += '<div class="company-card"><div class="company-card-head">'
+          + '<div class="company-av" style="background:' + c.color + '">' + init + '</div>'
+          + '<div><h4>' + c.name + '</h4><small>📍 ' + c.loc + '</small></div></div>'
+          + '<div class="company-stats">'
+          + '<div class="cs-item"><div class="cs-val">' + c.cl + '</div><div class="cs-lbl">Clients</div></div>'
+          + '<div class="cs-item"><div class="cs-val" style="color:#ea580c">₹' + c.rev + '</div><div class="cs-lbl">Collected</div></div>'
+          + '<div class="cs-item"><div class="cs-val" style="color:#dc2626">₹' + c.pen + '</div><div class="cs-lbl">Pending</div></div>'
+          + '</div></div>';
+  });
+  return html + '</div>';
+}
+
+// ========== MODALS ==========
+function openModalNew() {
+  document.getElementById('inp-name').value = '';
+  document.getElementById('inp-mobile').value = '';
+  document.getElementById('inp-email').value = '';
+  document.getElementById('inp-location').value = '';
+  document.getElementById('inp-total').value = '';
+  document.getElementById('inp-received').value = '';
+  document.getElementById('inp-clientid').value = 'KS-XXXXXXXX';
+  document.getElementById('inp-remarks').value = '';
+  document.getElementById('rem-box').style.display = 'none';
+  document.getElementById('other-doc-form').style.display = 'none';
+  ['doc1','doc2','doc3','doc4','doc5'].forEach(function(id) {
+    var d = document.getElementById(id);
+    d.className = 'doc-box';
+    d.querySelector('.doc-status').textContent = 'Click to upload';
+  });
+  document.getElementById('modal-new').className = 'overlay open';
+}
+
+function openModalFin(idx) {
+  STATE.editIdx = idx;
+  var c = STATE.clients[idx];
+  document.getElementById('fin-cid').textContent = c.id;
+  document.getElementById('fin-name').textContent = c.name;
+  document.getElementById('fin-loc').textContent = c.location;
+  document.getElementById('fin-proj').textContent = c.order + ' ' + c.kw;
+  document.getElementById('fin-total').textContent = '₹' + c.total.toLocaleString('en-IN');
+  document.getElementById('fin-rem').textContent = '₹' + (c.total - c.received).toLocaleString('en-IN');
+  document.getElementById('fin-pay').value = '';
+  document.getElementById('fin-remark').value = c.remark || '';
+  document.getElementById('modal-fin').className = 'overlay open';
+}
+
+function openModalExec(idx) {
+  STATE.editIdx = idx;
+  var c = STATE.clients[idx];
+  document.getElementById('exec-cid').textContent = c.id;
+  var steps = document.querySelectorAll('#exec-pipeline .p-step');
+  steps.forEach(function(s, i) {
+    s.className = 'p-step';
+    var dot = s.querySelector('.p-dot');
+    if (i < c.stage) { s.classList.add('done'); dot.textContent = '✓'; }
+    else if (i === c.stage) { s.classList.add('active'); dot.textContent = i + 1; }
+    else { dot.textContent = i + 1; }
+  });
+  if (c.stage > 0) document.getElementById('exec-stage').value = String(c.stage);
+  document.getElementById('exec-remark').value = '';
+  document.getElementById('modal-exec').className = 'overlay open';
+}
+
+function closeModal(id) { document.getElementById(id).className = 'overlay'; }
+
+// ========== FORM ACTIONS ==========
+function autoGenId() {
+  var mob = document.getElementById('inp-mobile').value.trim();
+  var em = document.getElementById('inp-email').value.trim();
+  if (mob.length >= 4 && em.length > 2) {
+    document.getElementById('inp-clientid').value = 'KS-' + mob.slice(-4) + String(em.charCodeAt(0)).padStart(4,'0');
+  }
+}
+
+function calcRemaining() {
+  var t = parseInt(document.getElementById('inp-total').value) || 0;
+  var r = parseInt(document.getElementById('inp-received').value) || 0;
+  if (t > 0) {
+    document.getElementById('rem-box').style.display = '';
+    document.getElementById('rem-val').textContent = '₹' + (t - r).toLocaleString('en-IN');
+  }
+}
+
+function saveNewClient() {
+  var name = document.getElementById('inp-name').value.trim();
+  if (!name) { showToast('⚠️ Please enter client name!'); return; }
+  var id = document.getElementById('inp-clientid').value;
+  if (id === 'KS-XXXXXXXX') id = 'KS-' + Math.floor(10000000 + Math.random() * 90000000);
+  STATE.clients.unshift({
+    id: id, name: name,
+    mobile: document.getElementById('inp-mobile').value || '0000000000',
+    email: document.getElementById('inp-email').value || '',
+    location: document.getElementById('inp-location').value || 'Location TBD',
+    order: document.getElementById('inp-order').value,
+    kw: (document.getElementById('inp-kw').value || '1') + ' kWp',
+    total: parseInt(document.getElementById('inp-total').value) || 0,
+    received: parseInt(document.getElementById('inp-received').value) || 0,
+    status: 'finance', stage: 0,
+    remark: 'Forwarded by Sales team.'
+  });
+  closeModal('modal-new');
+  showToast('✓ Client ' + id + ' created & forwarded to Finance!');
+  setTimeout(function() { navigate(STATE.view); }, 150);
+}
+
+function forwardToExecution() {
+  var remark = document.getElementById('fin-remark').value.trim();
+  if (!remark) { showToast('⚠️ Please add a remark before forwarding!'); return; }
+  if (STATE.editIdx >= 0) {
+    var pay = parseInt(document.getElementById('fin-pay').value) || 0;
+    STATE.clients[STATE.editIdx].received += pay;
+    STATE.clients[STATE.editIdx].status = 'execution';
+    STATE.clients[STATE.editIdx].stage = 1;
+    STATE.clients[STATE.editIdx].remark = remark;
+  }
+  closeModal('modal-fin');
+  showToast('✓ File forwarded to Execution Team!');
+  setTimeout(function() { navigate(STATE.view); }, 150);
+}
+
+function updateExecStage() {
+  if (STATE.editIdx >= 0) {
+    var stage = parseInt(document.getElementById('exec-stage').value);
+    STATE.clients[STATE.editIdx].stage = stage;
+    if (stage >= 7) STATE.clients[STATE.editIdx].status = 'complete';
+  }
+  closeModal('modal-exec');
+  showToast('✓ Execution stage updated!');
+  setTimeout(function() { navigate(STATE.view); }, 150);
+}
+
+// ========== TOAST ==========
+var toastTimer;
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = '';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.style.display = 'none'; }, 3000);
+}
+</script>
+</body>
+</html>
